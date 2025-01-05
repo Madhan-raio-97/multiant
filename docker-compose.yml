@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  # Django app running on Gunicorn
+  multiant:
+    build:
+      context: .  # Use the current directory for the Dockerfile
+      dockerfile: Dockerfile  # Specify the Dockerfile name (can be default or custom)
+    expose:
+      - "8000"  # Expose port 8000 internally to the Nginx container
+
+  # Nginx reverse proxy
+  nginx:
+    build:
+      context: ./nginx  # Use the current directory for the Dockerfile
+      dockerfile: Dockerfile  # Specify the Dockerfile name for Nginx (can be default or custom)
+    ports:
+      - "80:80"  # Expose port 80 on the host to port 80 of the container
+    depends_on:
+      - multiant
