@@ -37,6 +37,7 @@ SHARED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'shared',
 ]
 
 TENANT_APPS = [
@@ -46,6 +47,7 @@ TENANT_APPS = [
 INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS]
 
 MIDDLEWARE = [
+    'django_tenants.middleware.main.TenantMainMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -92,7 +94,7 @@ DATABASES = {
 
 
 DATABASE_ROUTERS = (
-    'django_tenants.routers.TenantSyncRouter'
+    'django_tenants.routers.TenantSyncRouter',
 )
 
 # Password validation
@@ -135,3 +137,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+TENANT_MODEL = "shared.Client"
+
+TENANT_DOMAIN_MODEL = "shared.Domain"
